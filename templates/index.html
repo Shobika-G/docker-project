@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Dockers</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title span {
+  color: #007BFF;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 0.6rem;
+  background: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#message {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+  </style>
+  <div class="login-container">
+    <h2 class="title">Welcome to <span>Dockers</span></h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="username">Username:</label>
+        <input id="username" type="text" placeholder="Enter username" required />
+      </div>
+      <div class="input-group">
+        <label for="password">Password:</label>
+        <input id="password" type="password" placeholder="Enter password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    <div id="message"></div>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+  
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+  
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      const data = await response.json();
+      document.getElementById('message').textContent = data.message;
+      document.getElementById('message').style.color = response.ok ? 'green' : 'red';
+    } catch (error) {
+      document.getElementById('message').textContent = 'Error connecting to server';
+      document.getElementById('message').style.color = 'red';
+    }
+  });
+  
+  </script>
+</body>
+</html>
